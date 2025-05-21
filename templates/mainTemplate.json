@@ -4,100 +4,71 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "eastus",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Location for all resources"
+        "description": "Location for all resources."
       }
     },
-    "storageAccountName": {
+    "namePrefix": {
       "type": "string",
-      "defaultValue": "[toLower(concat('stvinoth', uniqueString(resourceGroup().id)))]",
+      "defaultValue": "iacdemo",
       "metadata": {
-        "description": "Globally unique Storage Account name (auto-generated)"
+        "description": "Prefix for resource names."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {
+        "owner": "iac-owner",
+        "project": "infra-poc"
       },
-      "minLength": 3,
-      "maxLength": 24
-    },
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "vnet-iac-vinoth",
       "metadata": {
-        "description": "Name of the Virtual Network"
-      }
-    },
-    "addressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
-      "metadata": {
-        "description": "Address prefix for the Virtual Network"
-      }
-    },
-    "subnetName": {
-      "type": "string",
-      "defaultValue": "subnet-default",
-      "metadata": {
-        "description": "Name of the subnet"
-      }
-    },
-    "subnetPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.1.0/24",
-      "metadata": {
-        "description": "Subnet IP range"
+        "description": "Resource tags."
       }
     }
   },
-  "variables": {},
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2022-09-01",
-      "name": "[parameters('storageAccountName')]",
+      "name": "[concat(parameters('namePrefix'), 'storage')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "Standard_LRS"
       },
       "kind": "StorageV2",
       "properties": {},
-      "tags": {
-        "owner": "iac-owner",
-        "project": "iac-iac-poc"
-      }
+      "tags": "[parameters('tags')]"
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2022-07-01",
-      "name": "[parameters('vnetName')]",
+      "name": "[concat(parameters('namePrefix'), '-vnet')]",
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
-          "addressPrefixes": [
-            "[parameters('addressPrefix')]"
-          ]
+          "addressPrefixes": ["10.0.0.0/16"]
         },
         "subnets": [
           {
-            "name": "[parameters('subnetName')]",
+            "name": "default",
             "properties": {
-              "addressPrefix": "[parameters('subnetPrefix')]"
+              "addressPrefix": "10.0.0.0/24"
             }
           }
         ]
       },
-      "tags": {
-        "owner": "iac-owner",
-        "project": "iac-iac-poc"
-      }
+      "tags": "[parameters('tags')]"
     }
   ],
   "outputs": {
     "storageAccountName": {
       "type": "string",
-      "value": "[parameters('storageAccountName')]"
+      "value": "[concat(parameters('namePrefix'), 'storage')]"
     },
-    "vnetName": {
+    "virtualNetworkName": {
       "type": "string",
-      "value": "[parameters('vnetName')]"
+      "value": "[concat(parameters('namePrefix'), '-vnet')]"
     }
   }
 }

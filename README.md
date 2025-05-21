@@ -1,22 +1,32 @@
-# 🌐 Azure Infrastructure as Code – Fioneer DevOps Challenge
+# 🚀 Azure Infrastructure as Code – PoC (Fioneer Challenge)
 
-This proof-of-concept  demonstrates Infrastructure as Code deployment using Azure ARM templates, PowerShell automation, and GitHub source control. It enables standardized provisioning of core Azure resources like Virtual Networks and Storage Accounts.
+This repository demonstrates a **Proof of Concept (PoC)** to automate the deployment of basic Azure infrastructure using **ARM templates** and PowerShell. It’s intended to streamline infrastructure provisioning within an enterprise DevOps workflow.
 
 ---
 
-## 🚀 One-Click Deployment
+## 📌 Features
 
-Click below to deploy directly via Azure Portal:
+- Deploys:
+  - Azure Storage Account
+  - Virtual Network with a default subnet
+- Fully parameterized ARM template
+- Azure CLI / PowerShell automation support
+- Ready for CI/CD and extensible for future modules
+
+---
+
+## 🧪 One-Click Deployment
+
+Click the button below to deploy this PoC directly into your Azure tenant:
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/vinoji2005/Vinoth_POC/main/templates/mainTemplate.json)
 
-
-> ⚠️ **Note**: If this is a new subscription with no Resource Groups, please **run the PowerShell script below first** to create the required Resource Group.
+> **Note**: Ensure your GitHub repository is public or that the reviewer has access if it’s private.
 
 ---
 
-## 💻 Deploy via PowerShell (Recommended)
+## 🧰 Manual Deployment via PowerShell
 
-```powershell
-# Ensure Azure CLI and PowerShell are installed, then run:
-.\scripts\deploy.ps1 -ResourceGroupName "rg-fioneer-vinoth" -Location "eastus"
+```bash
+cd scripts
+.\deploy.ps1 -resourceGroupName "rg-iac-poc" -location "eastus"
